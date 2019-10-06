@@ -13,7 +13,7 @@ jobs:
           name: Deploy to S3 if branch is Master.
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync ~/8bit.biz s3://${AWS_S3_BUCKET_NAME}/ --exact-timestamps --delete
+              aws s3 sync ~/8bit.biz s3://${AWS_S3_BUCKET_NAME}/ --exact-timestamps --delete --exclude='.git/*'
             fi
 
 workflows:
