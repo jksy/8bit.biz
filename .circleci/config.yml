@@ -9,9 +9,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build & Deploy to S3.
+          name: Bundle
           command: |
-              cat index.slim | slimrb --pretty > index.html
+              bundle
+      - run:
+          name: Build
+          command: |
+              cat index.slim | bundle exec slimrb --pretty > index.html
+      - run:
+          name: Deploy to S3.
+          command: |
               aws s3 sync ~/8bit.biz s3://${AWS_S3_BUCKET_NAME}/ --exact-timestamps --delete --exclude='.git/*'
 
 workflows:
