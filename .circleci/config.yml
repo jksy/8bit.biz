@@ -3,14 +3,15 @@ jobs:
   build:
     working_directory: ~/8bit.biz
     docker:
-      - image: mesosphere/aws-cli:latest
+      - image: jksy/web.8bit.biz-build:latest
     environment:
       - AWS_S3_BUCKET_NAME: web.8bit.biz
     steps:
       - checkout
       - run:
-          name: Deploy to S3.
+          name: build & Deploy to S3.
           command: |
+              cat index.slim | slimrb --pretty > index.html
               aws s3 sync ~/8bit.biz s3://${AWS_S3_BUCKET_NAME}/ --exact-timestamps --delete --exclude='.git/*'
 
 workflows:
