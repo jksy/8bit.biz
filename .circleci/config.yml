@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: jksy/web.8bit.biz-build:latest
     environment:
-      - AWS_S3_BUCKET_NAME: web.8bit.biz
+      - AWS_S3_BUCKET_NAME: 8bit.biz
     steps:
       - checkout
       - run:
@@ -29,4 +29,3 @@ workflows:
           filters:
             branches:
               only: master
-
