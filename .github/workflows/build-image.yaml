@@ -20,11 +20,12 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v5
         with:
           images: jksy/web.8bit.biz-build
           tags: |
-            type=ref,event=branch
+            type=raw,value=latest
+            type=raw,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Tokyo'}}
             type=sha
           labels: |
             org.opencontainers.image.title="build html from slim"
