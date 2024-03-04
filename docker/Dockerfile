@@ -1,13 +1,4 @@
 FROM ruby:latest
 
-ARG pip_installer="https://bootstrap.pypa.io/get-pip.py"
-ARG awscli_version="1.16.253"
-
-ENV RUBYOPT -EUTF-8
-
-RUN apt-get install bash \
-    python \
-    curl \
-    bash
-
-RUN curl ${pip_installer} | python && pip install awscli==${awscli_version}
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && ./aws/install
+RUN /usr/local/bin/aws --version
