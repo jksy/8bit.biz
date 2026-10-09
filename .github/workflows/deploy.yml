@@ -6,10 +6,8 @@ on:
       - master
 
 jobs:
-  build-image:
+  deploy:
     runs-on: ubuntu-latest
-    container:
-      image: jksy/web.8bit.biz-build:latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -21,14 +19,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Bundle install
-        run: |
-          bundle install
-
-      - name: Build
-        run: |
-          cat index.slim | bundle exec slimrb --pretty > index.html
-
       - name: Deploy to S3
         run: |
-          aws s3 cp index.html "s3://${{ secrets.AWS_S3_BUCKET_NAME }}/"
+          aws s3 cp index.html "s3://${{ secrets.AWS_S3_BUCKET_NAME }}/" --content-type "text/html; charset=utf-8"
