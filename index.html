@@ -108,7 +108,6 @@ p:last-child{margin-bottom:0}
 @media (max-width:560px){.skills{grid-template-columns:1fr}}
 
 /* links */
-.links{margin:0;padding:0;list-style:none;display:grid;gap:6px}
 ul.plain{margin:0;padding-left:1.2em}
 
 footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
@@ -137,7 +136,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
     </li>
     <li>
       <h3>検索基盤（OpenSearch / Elasticsearch）の設計・精度改善</h3>
-      <p>データソースから OpenSearch / Elasticsearch へのインデックス設計と取り込み処理、日本語の全文検索・サジェストの精度改善（kuromoji・N-gram・読み仮名）、ランキングや集計 API の実装。インデックスの無停止切り替えや差分更新といった運用設計まで含めます。</p>
+      <p>データソースから OpenSearch / Elasticsearch へのインデックス設計と取り込み処理、日本語の全文検索・サジェストの精度改善（kuromoji・N-gram・読み仮名）、集計 API の実装。インデックスの無停止切り替えといった運用設計まで含めます。</p>
     </li>
     <li>
       <h3>長期運用システムのアップグレード・保守の引き継ぎ</h3>
@@ -161,12 +160,18 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
     <p class="title"><a href="https://www.resizing.net/">resizing</a> — 画像変換・配信 SaaS</p>
     <p>S3 にアップロードした画像を URL パラメータでリサイズ・クロップ・フォーマット変換（WebP / AVIF / HEIC / RAW 対応）して CDN から配信するサービスです。2019年に開発を始め、商用運用は7年目に入ります。</p>
     <dl class="rows" style="margin-top:14px">
-      <dt>規模</dt><dd>月間約2億リクエスト（CDN 経由）。本番・ステージング・開発・バックアップの4つの AWS アカウントで運用</dd>
+      <dt>規模</dt><dd>月間 億単位のリクエスト（CDN 経由）。本番・ステージング・開発・バックアップの4つの AWS アカウントで運用</dd>
       <dt>アプリ</dt><dd>Ruby on Rails（puma / nginx）、Solid Queue による非同期処理、Auth0 認証、ImageMagick 7 を自前ビルド（libheif / LibRaw 同梱）</dd>
       <dt>AWS</dt><dd>CloudFront → ALB → EC2 Auto Scaling（スポット）、S3（原本・変換キャッシュ・ログ）、Aurora MySQL、EC2 Image Builder による AMI ビルド、Athena によるアクセスログ集計</dd>
       <dt>IaC / CI</dt><dd>Terraform（10スタック、GitHub Actions + OIDC で plan / apply、日次の drift 検知）、Slack からの AMI デプロイ・ロールバック</dd>
       <dt>監視</dt><dd>OpenTelemetry → Grafana Cloud（トレース・ログ・メトリクス）、New Relic、Airbrake。Fluent Bit によるログの S3 長期保管</dd>
-      <dt>公開物</dt><dd><a href="https://github.com/jksy/resizing-gem">resizing-gem</a>（Ruby クライアント）、<a href="https://github.com/jksy/imagemagick-build">imagemagick-build</a>、<a href="https://github.com/jksy/setup-imagemagick">setup-imagemagick</a>（GitHub Action）</dd>
+      <dt>公開物</dt><dd>
+        <ul class="plain">
+          <li><a href="https://github.com/jksy/resizing-gem">resizing-gem</a>（Ruby クライアント）</li>
+          <li><a href="https://github.com/jksy/imagemagick-build">imagemagick-build</a></li>
+          <li><a href="https://github.com/jksy/setup-imagemagick">setup-imagemagick</a>（GitHub Action）</li>
+        </ul>
+      </dd>
     </dl>
   </div>
 </section>
@@ -177,13 +182,13 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
     <li class="card">
       <div class="card-head">
         <h3>教育系ポータルサイト — 検索 API・データ基盤の開発</h3>
-        <span class="when">2024年5月〜現在 ・ 準委任（週4日）</span>
+        <span class="when">2024年〜現在 ・ 準委任（週4日）</span>
       </div>
-      <p class="what">Python（FastAPI）/ OpenSearch / Directus。ヘッドレス CMS のデータを OpenSearch に取り込むコンバータと、サイト本体が使う検索 API を担当。</p>
+      <p class="what">Python（FastAPI）/ OpenSearch / Directus。ヘッドレス CMS のデータを OpenSearch に取り込むデータ連携バッチと、サイト本体が使う検索 API を担当。</p>
       <ul class="bul">
-        <li>十数種のインデックス設計と、それを参照する検索 API の新設・改修（PR 450件超）</li>
+        <li>十数種のインデックス設計と、それを参照する検索 API の新設・改修</li>
         <li>サジェストの読み仮名・N-gram 対応、評点順ソート、緯度経度検索、ランキング・SEO 向け集計の実装</li>
-        <li>コンバータの複数プロセス化、N+1 解消、差分更新と稼働中インデックスの保護</li>
+        <li>データ連携バッチの複数プロセス化、N+1 解消、差分更新と稼働中インデックスの保護</li>
         <li>CMS スキーマからのモデル自動生成、スキーマ変更検出ワークフロー、CI（ruff / pytest / ECR ビルド）の整備</li>
       </ul>
     </li>
@@ -199,12 +204,18 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
         <h3>モバイルゲーム会社 — CI/CD 基盤の移行・構築</h3>
         <span class="when">2022年〜2024年 ・ 業務委託</span>
       </div>
-      <p class="what">Unity / .NET のビルド・テストパイプラインを Jenkins から GitHub Actions へ移行。ドキュメントのない既存ジョブをコードから解析して再実装し、別プロジェクトでは CI/CD を新規構築。必要になった GitHub Actions（Unity Test Runner、ReSharper、GCS キャッシュ）には OSS 側へ修正 PR を送って対応。</p>
+      <p class="what">Unity / .NET / Jenkins / GitHub Actions。ビルド・テストパイプラインの移行と新規構築を担当。</p>
+      <ul class="bul">
+        <li>Unity / .NET のビルド・テストパイプラインを Jenkins から GitHub Actions へ移行</li>
+        <li>ドキュメントのない既存ジョブをコードから解析して再実装</li>
+        <li>別プロジェクトでの CI/CD の新規構築</li>
+        <li>必要になった GitHub Actions（Unity Test Runner、ReSharper、GCS キャッシュ）は、OSS 側へ修正 PR を送って対応</li>
+      </ul>
     </li>
     <li class="card">
       <div class="card-head">
         <h3>生産者直販 EC — バックエンド開発・運用・障害対応・インフラ</h3>
-        <span class="when">2018年3月〜2022年4月（社員・業務委託を含む）、2025年にスポット対応</span>
+        <span class="when">2018年〜2022年（社員・業務委託を含む）、2025年にスポット対応</span>
       </div>
       <p class="what">Ruby on Rails / MySQL / Elasticsearch / AWS。社員・業務委託の両方の形で、同じプロダクトに約4年間継続して関わる。</p>
       <ul class="bul">
@@ -216,17 +227,29 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
     </li>
     <li class="card">
       <div class="card-head">
-        <h3>ゲーム会社 クラウド開発室</h3>
-        <span class="when">2016年1月〜2018年2月</span>
+        <h3>大手 IT 企業グループ（ゲーム・クラウド事業）— 新規サービス・社内クラウド基盤の開発</h3>
+        <span class="when">2016年〜2018年</span>
       </div>
-      <p class="what">名刺管理アプリケーションのバックエンド：法人ニュースを収集するクローラと Elasticsearch による全文検索の設計・構築・運用、各種デイリーバッチ、Tesseract OCR の研究開発。社内のマシンリソース利用状況を収集して Elasticsearch に蓄積し Grafana で可視化する基盤の構築。OpenStack 上に載せるミドルウェアの検証。</p>
+      <p class="what">Elasticsearch / Grafana / OpenStack。名刺管理アプリケーションのバックエンドと、社内向けクラウド基盤を担当。</p>
+      <ul class="bul">
+        <li>法人ニュースを収集するクローラと、Elasticsearch による全文検索の設計・構築・運用</li>
+        <li>各種デイリーバッチの開発、Tesseract OCR の研究開発</li>
+        <li>社内のマシンリソース利用状況を収集して Elasticsearch に蓄積し、Grafana で可視化する基盤の構築</li>
+        <li>OpenStack 上に載せるミドルウェアの検証</li>
+      </ul>
     </li>
     <li class="card">
       <div class="card-head">
         <h3>オンラインゲームポータルの開発・運用</h3>
         <span class="when">2005年〜2015年</span>
       </div>
-      <p class="what">会員登録数 数十万規模のポータルで、ポータルサイト本体の API / Web とサーバー構築、各決済（クレジットカード・WebMoney 等）とつなぐ課金ゲートウェイ、オンライン FPS 向け VoiceChat サーバー、社内共通ライブラリの開発と運用を約10年担当。障害対応と、障害分析用の監視ツールの作成も行う。</p>
+      <p class="what">会員登録数 数十万規模のポータルで、開発と運用を約10年担当。</p>
+      <ul class="bul">
+        <li>ポータルサイト本体の API / Web の開発とサーバー構築</li>
+        <li>各決済（クレジットカード・WebMoney 等）とつなぐ課金ゲートウェイ</li>
+        <li>オンライン FPS 向け VoiceChat サーバー、社内共通ライブラリの開発</li>
+        <li>障害対応と、障害分析用の監視ツールの作成</li>
+      </ul>
     </li>
   </ul>
   <p class="note" style="margin-top:18px">それ以前：EC サイトの改修（PHP）、Windows アプリ受託開発（Visual C++ / C#）、Android アプリ開発。2019年9月にフリーランスとして独立、2020年6月に画像研究所合同会社を設立。</p>
@@ -236,23 +259,24 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
   <h2>主な技術領域</h2>
   <dl class="skills">
     <div><dt>バックエンド</dt><dd>Ruby on Rails、Python（FastAPI）、API 設計、決済・課金系</dd></div>
-    <div><dt>検索</dt><dd>OpenSearch / Elasticsearch（インデックス設計、kuromoji・N-gram、サジェスト、ランキング集計）</dd></div>
+    <div><dt>検索</dt><dd>OpenSearch / Elasticsearch（インデックス設計、kuromoji・N-gram、サジェスト）</dd></div>
     <div><dt>AWS</dt><dd>EC2 / Lambda / S3 / CloudFront / RDS（Aurora） / ElastiCache / Athena / MediaConvert / ImageBuilder</dd></div>
     <div><dt>IaC / CI/CD</dt><dd>Terraform、GitHub Actions、CircleCI</dd></div>
     <div><dt>データベース</dt><dd>MySQL（Aurora）、PostgreSQL、Oracle、Redis</dd></div>
     <div><dt>画像処理</dt><dd>ImageMagick（自前ビルド）、OpenCV、Tesseract OCR</dd></div>
-    <div><dt>監視・分析</dt><dd>Grafana、Elastic Cloud、BigQuery</dd></div>
+    <div><dt>監視・分析</dt><dd>OpenTelemetry、Grafana、New Relic、Sentry、Airbrake、BigQuery</dd></div>
   </dl>
 </section>
 
 <section id="works">
   <h2>公開しているもの</h2>
-  <ul class="links">
+  <ul class="plain">
     <li><a href="https://github.com/jksy/rmagick_tidy">rmagick_tidy</a> — RMagick の画像オブジェクトをスコープ単位で自動解放する gem（Rails の around_action 対応）</li>
     <li><a href="https://rubygems.org/gems/oracle-sql-parser">oracle-sql-parser</a> — Oracle SQL のパーサ（gem）</li>
     <li><a href="https://rubygems.org/gems/oci8-auto-binder">oci8-auto-binder</a> — OCI8 のバインド変数自動化（gem）</li>
     <li><a href="https://github.com/jksy/rust-nes">rust-nes</a> — Rust によるファミコンエミュレータ</li>
-    <li><a href="https://github.com/jksy">GitHub（公開リポジトリ一覧）</a> / <a href="https://jksy.hatenablog.com/">Hatena Blog</a></li>
+    <li><a href="https://github.com/jksy">GitHub（公開リポジトリ一覧）</a></li>
+    <li><a href="https://jksy.hatenablog.com/">Hatena Blog</a></li>
   </ul>
 </section>
 
@@ -271,7 +295,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
   <dl class="rows">
     <dt>契約主体</dt><dd>画像研究所合同会社（東京都）との法人契約</dd>
     <dt>契約形態</dt><dd>準委任（月額・時間単位）、請負（成果物単位）、技術サポート（月額固定）</dd>
-    <dt>稼働</dt><dd>平日は週1日程度。夜間・休日の稼働でよければ週2〜3日相当まで対応可。リモート中心、都内での打ち合わせ可。</dd>
+    <dt>稼働</dt><dd>平日週1〜5日で調整可。リモート中心、都内での打ち合わせ可。現在の空き状況はページ上部をご覧ください。</dd>
     <dt>単価</dt><dd>要相談（内容・期間・契約形態により調整）</dd>
     <dt>連絡先</dt><dd><a href="mailto:jksy@8bit.biz">jksy@8bit.biz</a></dd>
   </dl>
