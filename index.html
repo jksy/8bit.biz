@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>粕谷 準一郎 — バックエンド/インフラエンジニア</title>
+<meta name="description" content="AWS上のRails/Pythonシステムの設計・運用改善、IaC化、画像処理SaaS resizing の設計・運用。画像研究所合同会社（東京）。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14263f;
+  --text:#2b3a4e;
+  --muted:#5f6f84;
+  --blue:#1f5fbf;
+  --blue-deep:#143f80;
+  --surface:#eef3fa;
+  --bg:#ffffff;
+  --line:#cfdbec;
+  --ok:#1f7a4d;
+  --ok-bg:#e8f5ee;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --ink:#e8eef7; --text:#c9d3e0; --muted:#8c9bb0;
+    --blue:#7fb0ff; --blue-deep:#a9c8ff;
+    --surface:#15233a; --bg:#0f1a2b; --line:#2b3d58;
+    --ok:#7fd3a4; --ok-bg:#163327;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8eef7; --text:#c9d3e0; --muted:#8c9bb0;
+  --blue:#7fb0ff; --blue-deep:#a9c8ff;
+  --surface:#15233a; --bg:#0f1a2b; --line:#2b3d58;
+  --ok:#7fd3a4; --ok-bg:#163327;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"IBM Plex Sans JP",system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;
+  font-size:16px;line-height:1.85;font-feature-settings:"palt";
+}
+a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:var(--blue)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.name{margin:0;font-size:clamp(28px,5vw,40px);font-weight:600;color:var(--ink);letter-spacing:.01em;line-height:1.25}
+.name small{display:block;font-size:.42em;font-weight:500;color:var(--muted);letter-spacing:.08em;margin-top:6px}
+.role{margin:20px 0 0;font-size:18px;color:var(--ink);font-weight:500}
+.lead{margin:12px 0 0;max-width:40em}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:22px;padding:6px 12px 6px 10px;border-radius:999px;background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:500}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.contact{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.btn{display:inline-block;padding:11px 20px;border-radius:6px;background:var(--blue);color:#fff;text-decoration:none;font-weight:500}
+.btn:hover{background:var(--blue-deep);color:#fff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn{color:#0f1a2b} :root:not([data-theme="light"]) .btn:hover{color:#0f1a2b} }
+:root[data-theme="dark"] .btn{color:#0f1a2b}
+.contact .mono{color:var(--muted);font-size:14px}
+
+/* sections */
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h2{margin:0 0 20px;font-size:21px;font-weight:600;color:var(--ink);padding-left:14px;border-left:4px solid var(--blue);line-height:1.3}
+h3{margin:0;font-size:17px;font-weight:600;color:var(--ink)}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+.note{color:var(--muted);font-size:14px}
+
+/* services */
+.services{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.services li{padding:18px 20px;background:var(--surface);border-radius:8px}
+.services h3{margin-bottom:6px}
+.services p{font-size:15px}
+
+/* dl rows */
+.rows{display:grid;grid-template-columns:minmax(120px,160px) 1fr;gap:10px 20px;margin:0}
+.rows dt{color:var(--muted);font-size:14px;padding-top:3px}
+.rows dd{margin:0}
+@media (max-width:520px){.rows{grid-template-columns:1fr;gap:2px 0}.rows dd{margin-bottom:12px}}
+
+/* resizing feature */
+.feature{border:1px solid var(--line);border-radius:10px;padding:24px;background:var(--bg)}
+.feature .kicker{font-size:14px;color:var(--muted);margin:0 0 4px}
+.feature .title{font-size:24px;font-weight:600;color:var(--ink);margin:0 0 12px;line-height:1.3}
+.feature ul{margin:14px 0 0;padding-left:1.2em}
+.feature li{margin:4px 0}
+
+/* career */
+.career{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card-head{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.card .when{color:var(--muted);font-size:14px}
+.card .what{margin:0;font-size:15px}
+.card .bul{margin:8px 0 0;padding-left:1.2em;font-size:14px;color:var(--text)}
+.card .bul li{margin:3px 0}
+
+/* skills */
+.skills{display:grid;grid-template-columns:1fr 1fr;gap:18px 32px;margin:0}
+.skills dt{font-weight:600;color:var(--ink);margin-bottom:4px}
+.skills dd{margin:0;font-size:15px}
+@media (max-width:560px){.skills{grid-template-columns:1fr}}
+
+/* links */
+.links{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+ul.plain{margin:0;padding-left:1.2em}
+
+footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1 class="name">粕谷 準一郎<small>Junichiro Kasuya</small></h1>
+  <p class="role">バックエンド / インフラエンジニア（フリーランス・東京）</p>
+  <p class="lead">AWS上で動くRails・Pythonシステムの設計、運用改善、インフラのコード化（Terraform）を請け負っています。画像処理SaaS「resizing」を設計・運用しています。</p>
+  <span class="status">新規のご相談：受付中（平日週1日、夜間・休日込みなら週2〜3日相当）</span>
+  <div class="contact">
+    <a class="btn" href="mailto:jksy@8bit.biz">メールで相談する</a>
+    <span class="mono">jksy@8bit.biz</span>
+  </div>
+</header>
+
+<section id="services">
+  <h2>依頼できること</h2>
+  <ul class="services">
+    <li>
+      <h3>AWS上のRails / Pythonシステムの設計・運用改善</h3>
+      <p>既存システムの構成見直し、ボトルネックの特定、監視・ログ基盤の整備、コスト削減。運用に入ってからの改善を含めて対応します。</p>
+    </li>
+    <li>
+      <h3>検索基盤（OpenSearch / Elasticsearch）の設計・精度改善</h3>
+      <p>データソースから OpenSearch / Elasticsearch へのインデックス設計と取り込み処理、日本語の全文検索・サジェストの精度改善（kuromoji・N-gram・読み仮名）、ランキングや集計 API の実装。インデックスの無停止切り替えや差分更新といった運用設計まで含めます。</p>
+    </li>
+    <li>
+      <h3>長期運用システムのアップグレード・保守の引き継ぎ</h3>
+      <p>Rails / Ruby / Elasticsearch / MySQL など、放置されがちなバージョンアップを、動作保証のテストや CI の整備とセットで実施。担当者が抜けたシステムの保守引き継ぎ、障害対応、ドキュメント化も対応します。</p>
+    </li>
+    <li>
+      <h3>インフラのコード化（Terraform）と CI/CD 整備</h3>
+      <p>手作業で構築された環境の Terraform 化、GitHub Actions / CircleCI でのデプロイ自動化、環境分離の設計。Jenkins からの移行や、既存ジョブをコードから解析して再実装する作業も対応します。社内への定着支援まで含めます。</p>
+    </li>
+    <li>
+      <h3>技術サポート・レビュー</h3>
+      <p>週数時間からの技術相談、設計レビュー、PR レビュー、インフラ移行の方針策定。セキュリティ観点のレビューは情報処理安全確保支援士として対応します。</p>
+    </li>
+  </ul>
+</section>
+
+<section id="resizing">
+  <h2>自社サービス</h2>
+  <div class="feature">
+    <p class="kicker">設計・開発・運用</p>
+    <p class="title"><a href="https://www.resizing.net/">resizing</a> — 画像変換・配信 SaaS</p>
+    <p>S3 にアップロードした画像を URL パラメータでリサイズ・クロップ・フォーマット変換（WebP / AVIF / HEIC / RAW 対応）して CDN から配信するサービスです。2019年に開発を始め、商用運用は7年目に入ります。</p>
+    <dl class="rows" style="margin-top:14px">
+      <dt>規模</dt><dd>月間約2億リクエスト（CDN 経由）。本番・ステージング・開発・バックアップの4つの AWS アカウントで運用</dd>
+      <dt>アプリ</dt><dd>Ruby on Rails（puma / nginx）、Solid Queue による非同期処理、Auth0 認証、ImageMagick 7 を自前ビルド（libheif / LibRaw 同梱）</dd>
+      <dt>AWS</dt><dd>CloudFront → ALB → EC2 Auto Scaling（スポット）、S3（原本・変換キャッシュ・ログ）、Aurora MySQL、EC2 Image Builder による AMI ビルド、Athena によるアクセスログ集計</dd>
+      <dt>IaC / CI</dt><dd>Terraform（10スタック、GitHub Actions + OIDC で plan / apply、日次の drift 検知）、Slack からの AMI デプロイ・ロールバック</dd>
+      <dt>監視</dt><dd>OpenTelemetry → Grafana Cloud（トレース・ログ・メトリクス）、New Relic、Airbrake。Fluent Bit によるログの S3 長期保管</dd>
+      <dt>公開物</dt><dd><a href="https://github.com/jksy/resizing-gem">resizing-gem</a>（Ruby クライアント）、<a href="https://github.com/jksy/imagemagick-build">imagemagick-build</a>、<a href="https://github.com/jksy/setup-imagemagick">setup-imagemagick</a>（GitHub Action）</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="career">
+  <h2>主な経歴</h2>
+  <ul class="career">
+    <li class="card">
+      <div class="card-head">
+        <h3>教育系ポータルサイト — 検索 API・データ基盤の開発</h3>
+        <span class="when">2024年5月〜現在 ・ 準委任（週4日）</span>
+      </div>
+      <p class="what">Python（FastAPI）/ OpenSearch / Directus。ヘッドレス CMS のデータを OpenSearch に取り込むコンバータと、サイト本体が使う検索 API を担当。</p>
+      <ul class="bul">
+        <li>十数種のインデックス設計と、それを参照する検索 API の新設・改修（PR 450件超）</li>
+        <li>サジェストの読み仮名・N-gram 対応、評点順ソート、緯度経度検索、ランキング・SEO 向け集計の実装</li>
+        <li>コンバータの複数プロセス化、N+1 解消、差分更新と稼働中インデックスの保護</li>
+        <li>CMS スキーマからのモデル自動生成、スキーマ変更検出ワークフロー、CI（ruff / pytest / ECR ビルド）の整備</li>
+      </ul>
+    </li>
+    <li class="card">
+      <div class="card-head">
+        <h3>生産者直販 EC — インフラ技術サポート</h3>
+        <span class="when">2025年〜現在 ・ 月数時間</span>
+      </div>
+      <p class="what">AWS 構成のレビューと技術相談。レビューと会議体への参加が中心。</p>
+    </li>
+    <li class="card">
+      <div class="card-head">
+        <h3>モバイルゲーム会社 — CI/CD 基盤の移行・構築</h3>
+        <span class="when">2022年〜2024年 ・ 業務委託</span>
+      </div>
+      <p class="what">Unity / .NET のビルド・テストパイプラインを Jenkins から GitHub Actions へ移行。ドキュメントのない既存ジョブをコードから解析して再実装し、別プロジェクトでは CI/CD を新規構築。必要になった GitHub Actions（Unity Test Runner、ReSharper、GCS キャッシュ）には OSS 側へ修正 PR を送って対応。</p>
+    </li>
+    <li class="card">
+      <div class="card-head">
+        <h3>生産者直販 EC — バックエンド開発・運用・障害対応・インフラ</h3>
+        <span class="when">2018年3月〜2022年4月（社員・業務委託を含む）、2025年にスポット対応</span>
+      </div>
+      <p class="what">Ruby on Rails / MySQL / Elasticsearch / AWS。社員・業務委託の両方の形で、同じプロダクトに約4年間継続して関わる。</p>
+      <ul class="bul">
+        <li>決済、配送、定期購入の実装。新規サーバー実装時の方針決めと EC 側との連携実装</li>
+        <li>ふるさと納税対応、アプリ向け API の改修とドキュメント更新、Elasticsearch による商品検索（kuromoji・読み仮名）</li>
+        <li>本番環境の運用・監視・障害対応、CS 向けテクニカルサポート、IT 監査 / ISMS 対応、エンジニア採用</li>
+        <li>Rails 5.2 → 7.0 / Ruby 2.5 → 3.1 / Elasticsearch 5 → 7 / MySQL 5.6 → 5.7 のアップグレード、CircleCI 2.0 移行、Docker 開発環境、PR ごとに動作確認できるレビュー環境の構築、Capistrano デプロイと Slack 通知の仕組み、Terraform・CloudFront・logrotate などの運用スクリプト</li>
+      </ul>
+    </li>
+    <li class="card">
+      <div class="card-head">
+        <h3>ゲーム会社 クラウド開発室</h3>
+        <span class="when">2016年1月〜2018年2月</span>
+      </div>
+      <p class="what">名刺管理アプリケーションのバックエンド：法人ニュースを収集するクローラと Elasticsearch による全文検索の設計・構築・運用、各種デイリーバッチ、Tesseract OCR の研究開発。社内のマシンリソース利用状況を収集して Elasticsearch に蓄積し Grafana で可視化する基盤の構築。OpenStack 上に載せるミドルウェアの検証。</p>
+    </li>
+    <li class="card">
+      <div class="card-head">
+        <h3>オンラインゲームポータルの開発・運用</h3>
+        <span class="when">2005年〜2015年</span>
+      </div>
+      <p class="what">会員登録数 数十万規模のポータルで、ポータルサイト本体の API / Web とサーバー構築、各決済（クレジットカード・WebMoney 等）とつなぐ課金ゲートウェイ、オンライン FPS 向け VoiceChat サーバー、社内共通ライブラリの開発と運用を約10年担当。障害対応と、障害分析用の監視ツールの作成も行う。</p>
+    </li>
+  </ul>
+  <p class="note" style="margin-top:18px">それ以前：EC サイトの改修（PHP）、Windows アプリ受託開発（Visual C++ / C#）、Android アプリ開発。2019年9月にフリーランスとして独立、2020年6月に画像研究所合同会社を設立。</p>
+</section>
+
+<section id="skills">
+  <h2>主な技術領域</h2>
+  <dl class="skills">
+    <div><dt>バックエンド</dt><dd>Ruby on Rails、Python（FastAPI）、API 設計、決済・課金系</dd></div>
+    <div><dt>検索</dt><dd>OpenSearch / Elasticsearch（インデックス設計、kuromoji・N-gram、サジェスト、ランキング集計）</dd></div>
+    <div><dt>AWS</dt><dd>EC2 / Lambda / S3 / CloudFront / RDS（Aurora） / ElastiCache / Athena / MediaConvert / ImageBuilder</dd></div>
+    <div><dt>IaC / CI/CD</dt><dd>Terraform、GitHub Actions、CircleCI</dd></div>
+    <div><dt>データベース</dt><dd>MySQL（Aurora）、PostgreSQL、Oracle、Redis</dd></div>
+    <div><dt>画像処理</dt><dd>ImageMagick（自前ビルド）、OpenCV、Tesseract OCR</dd></div>
+    <div><dt>監視・分析</dt><dd>Grafana、Elastic Cloud、BigQuery</dd></div>
+  </dl>
+</section>
+
+<section id="works">
+  <h2>公開しているもの</h2>
+  <ul class="links">
+    <li><a href="https://github.com/jksy/rmagick_tidy">rmagick_tidy</a> — RMagick の画像オブジェクトをスコープ単位で自動解放する gem（Rails の around_action 対応）</li>
+    <li><a href="https://rubygems.org/gems/oracle-sql-parser">oracle-sql-parser</a> — Oracle SQL のパーサ（gem）</li>
+    <li><a href="https://rubygems.org/gems/oci8-auto-binder">oci8-auto-binder</a> — OCI8 のバインド変数自動化（gem）</li>
+    <li><a href="https://github.com/jksy/rust-nes">rust-nes</a> — Rust によるファミコンエミュレータ</li>
+    <li><a href="https://github.com/jksy">GitHub（公開リポジトリ一覧）</a> / <a href="https://jksy.hatenablog.com/">Hatena Blog</a></li>
+  </ul>
+</section>
+
+<section id="certs">
+  <h2>資格</h2>
+  <ul class="plain">
+    <li>情報処理安全確保支援士（登録番号 第001873号）</li>
+    <li>ネットワークスペシャリスト</li>
+    <li><a href="https://www.credly.com/badges/9a07b1e1-adbf-453d-a1de-4027ead123a7/public_url">AWS Certified Solutions Architect – Associate</a></li>
+    <li>第二種情報処理技術者</li>
+  </ul>
+</section>
+
+<section id="terms">
+  <h2>契約について</h2>
+  <dl class="rows">
+    <dt>契約主体</dt><dd>画像研究所合同会社（東京都）との法人契約</dd>
+    <dt>契約形態</dt><dd>準委任（月額・時間単位）、請負（成果物単位）、技術サポート（月額固定）</dd>
+    <dt>稼働</dt><dd>平日は週1日程度。夜間・休日の稼働でよければ週2〜3日相当まで対応可。リモート中心、都内での打ち合わせ可。</dd>
+    <dt>単価</dt><dd>要相談（内容・期間・契約形態により調整）</dd>
+    <dt>連絡先</dt><dd><a href="mailto:jksy@8bit.biz">jksy@8bit.biz</a></dd>
+  </dl>
+</section>
+
+<footer>
+  最終更新：2026年10月 ・ © 画像研究所合同会社
+</footer>
+
+</div>
+</body>
+</html>
