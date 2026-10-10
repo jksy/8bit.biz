@@ -147,6 +147,10 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
       <p>手作業で構築された環境の Terraform 化、GitHub Actions / CircleCI でのデプロイ自動化、環境分離の設計。Jenkins からの移行や、既存ジョブをコードから解析して再実装する作業も対応します。社内への定着支援まで含めます。</p>
     </li>
     <li>
+      <h3>AI コードレビュー・AI エージェントの CI 組み込み</h3>
+      <p>Claude Code などによる PR の自動レビュー、依存更新 PR の互換性・脆弱性チェック、Issue からの実装 PR 作成を GitHub Actions に組み込みます。レビュー観点と「既決事項の台帳」の設計で誤指摘を減らし、トークン権限・bot からの起動・コスト上限・失敗時の通知まで含めて、チームで運用し続けられる形にします。自社サービスで実運用している構成をベースにします。</p>
+    </li>
+    <li>
       <h3>技術サポート・レビュー</h3>
       <p>週数時間からの技術相談、設計レビュー、PR レビュー、インフラ移行の方針策定。セキュリティ観点のレビューは情報処理安全確保支援士として対応します。</p>
     </li>
@@ -163,7 +167,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
       <dt>規模</dt><dd>月間 億単位のリクエスト（CDN 経由）。本番・ステージング・開発・バックアップの4つの AWS アカウントで運用</dd>
       <dt>アプリ</dt><dd>Ruby on Rails（puma / nginx）、Solid Queue による非同期処理、Auth0 認証、ImageMagick 7 を自前ビルド（libheif / LibRaw 同梱）</dd>
       <dt>AWS</dt><dd>CloudFront → ALB → EC2 Auto Scaling（スポット）、S3（原本・変換キャッシュ・ログ）、Aurora MySQL、EC2 Image Builder による AMI ビルド、Athena によるアクセスログ集計</dd>
-      <dt>IaC / CI</dt><dd>Terraform（10スタック、GitHub Actions + OIDC で plan / apply、日次の drift 検知）、Slack からの AMI デプロイ・ロールバック</dd>
+      <dt>IaC / CI</dt><dd>Terraform（10スタック、GitHub Actions + OIDC で plan / apply、日次の drift 検知）、Slack からの AMI デプロイ・ロールバック。Claude Code による PR 自動レビュー（行単位の指摘＋総評）、依存更新 PR の互換性レビュー、Issue からの実装 PR 作成を CI で運用</dd>
       <dt>監視</dt><dd>OpenTelemetry → Grafana Cloud（トレース・ログ・メトリクス）、New Relic、Airbrake。Fluent Bit によるログの S3 長期保管</dd>
       <dt>公開物</dt><dd>
         <ul class="plain">
@@ -261,7 +265,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:13px}
     <div><dt>バックエンド</dt><dd>Ruby on Rails、Python（FastAPI）、API 設計、決済・課金系</dd></div>
     <div><dt>検索</dt><dd>OpenSearch / Elasticsearch（インデックス設計、kuromoji・N-gram、サジェスト）</dd></div>
     <div><dt>AWS</dt><dd>EC2 / Lambda / S3 / CloudFront / RDS（Aurora） / ElastiCache / Athena / MediaConvert / ImageBuilder</dd></div>
-    <div><dt>IaC / CI/CD</dt><dd>Terraform、GitHub Actions、CircleCI</dd></div>
+    <div><dt>IaC / CI/CD</dt><dd>Terraform、GitHub Actions、CircleCI、Claude Code（CI 組み込み）</dd></div>
     <div><dt>データベース</dt><dd>MySQL（Aurora）、PostgreSQL、Oracle、Redis</dd></div>
     <div><dt>画像処理</dt><dd>ImageMagick（自前ビルド）、OpenCV、Tesseract OCR</dd></div>
     <div><dt>監視・分析</dt><dd>OpenTelemetry、Grafana、New Relic、Sentry、Airbrake、BigQuery</dd></div>
